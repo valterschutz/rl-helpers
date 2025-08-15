@@ -6,7 +6,6 @@ from typing import Any
 
 import numpy as np
 import torch
-from tensordict import TensorDictBase
 from tensordict.nn import TensorDictModule
 from torch import nn
 from torchrl.envs import EnvBase
