@@ -1,5 +1,5 @@
 [project]
-name = "rl-utils"
+name = "rl-helpers"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
