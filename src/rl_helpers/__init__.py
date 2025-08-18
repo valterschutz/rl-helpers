@@ -61,7 +61,6 @@ def calc_return(tensor: torch.Tensor, gamma: float) -> float:
     """Calculate the return for the rewards in `tensor` with discount factor `gamma`."""
     n_steps = len(tensor)
     discounting = (gamma * torch.ones(n_steps)) ** torch.arange(n_steps)
-    print(discounting)
     g = (discounting * tensor).sum().item()
     return g
 
