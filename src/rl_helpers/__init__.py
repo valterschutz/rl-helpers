@@ -2,7 +2,7 @@
 
 from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Any, Callable
+from typing import Any, Callable, Sequence
 
 import numpy as np
 from tensordict import TensorDictBase
@@ -10,6 +10,8 @@ import torch
 from tensordict.nn import TensorDictModule
 from torch import nn
 from torchrl.envs import EnvBase
+from torch.distributions import Categorical
+import torch.nn.functional as F
 
 
 def module_norm(module: nn.Module) -> float:
@@ -88,3 +90,58 @@ def verify_return(
         abs(mean_return - expected_return) < mean_tolerance
         and std_return < std_tolerance
     )
+
+
+# def multinomial_masks(
+#     batch_size: torch.Size,
+#     probs: Sequence[float],
+#     device: torch.device | None = None,
+#     generator: torch.Generator | None = None,
+# ) -> tuple[torch.Tensor, ...]:
+#     """
+#     Sample mutually exclusive boolean masks according to given probabilities.
+#
+#     Args:
+#         batch_size: torch.Size, e.g. (N,) or (N, M) — leading dimensions for sampling.
+#         probs: sequence of probabilities that should sum to 1.
+#         device: optional torch device.
+#         generator: optional torch.Generator for reproducibility.
+#
+#     Returns:
+#         Tuple of boolean masks, one per category, shape = [*batch_size].
+#     """
+#     dist = Categorical(probs=torch.tensor(probs, device=device))
+#     samples = dist.sample(batch_size, generator=generator)  # integer categories
+#     masks = F.one_hot(samples, num_classes=len(probs)).to(torch.bool)
+#
+#     return tuple(masks[..., i] for i in range(len(probs)))$
+
+
+def multinomial_masks(
+    batch_size: torch.Size,
+    probs: Sequence[float],
+    device: torch.device | None = None,
+    generator: torch.Generator | None = None,
+) -> tuple[torch.Tensor, ...]:
+    """
+    Sample mutually exclusive boolean masks according to given probabilities.
+
+    Args:
+        batch_size: torch.Size, e.g. (N,) or (N, M).
+        probs: sequence of probabilities that should sum to 1.
+        device: optional torch device.
+        generator: optional torch.Generator for reproducibility.
+
+    Returns:
+        Tuple of boolean masks, one per category, shape = [*batch_size].
+    """
+    probs_t = torch.tensor(probs, device=device)
+    # Flatten batch for multinomial sampling
+    numel = int(torch.tensor(batch_size).prod())
+    samples = torch.multinomial(
+        probs_t, num_samples=numel, replacement=True, generator=generator
+    )
+    samples = samples.view(*batch_size)  # reshape back to batch
+
+    masks = F.one_hot(samples, num_classes=len(probs)).to(torch.bool)
+    return tuple(masks[..., i] for i in range(len(probs)))

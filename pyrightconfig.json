@@ -32,6 +32,7 @@
   "reportExplicitAny": false,
   "reportUnknownParameterType": false,
   "reportMissingParameterType": false,
-  "reportUnusedVariable": false
-
+  "reportUnusedVariable": false,
+  "reportUndefinedVariable": false,
+  "reportUnknownMemberType": false
 }
