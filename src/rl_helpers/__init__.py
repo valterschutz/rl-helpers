@@ -53,7 +53,7 @@ def eval_mode(*models: nn.Module) -> Iterator[None]:
 
 def dict_with_prefix(prefix: str, d: dict[str, Any]) -> dict[str, Any]:
     """Return a dictionary with all keys prefixed by `prefix`."""
-    return {f"{prefix}.{k}": v for k, v in d.items()}
+    return {f"{prefix}{k}": v for k, v in d.items()}
 
 
 # tested
