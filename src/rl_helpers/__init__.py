@@ -2,9 +2,10 @@
 
 from collections.abc import Iterator
 from contextlib import contextmanager
-from typing import Any
+from typing import Any, Callable
 
 import numpy as np
+from tensordict import TensorDictBase
 import torch
 from tensordict.nn import TensorDictModule
 from torch import nn
@@ -67,7 +68,7 @@ def calc_return(tensor: torch.Tensor, gamma: float) -> float:
 
 def verify_return(
     env: EnvBase,
-    policy: TensorDictModule,
+    policy: Callable[[TensorDictBase], TensorDictBase],
     gamma: float,
     expected_return: float,
     n_evals: int,
