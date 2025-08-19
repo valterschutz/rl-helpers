@@ -1,17 +1,15 @@
 # pyright: reportUnknownVariableType=none, reportUnknownMemberType=none, reportUnknownArgumentType=none, reportMissingTypeStubs=none
 
-from collections.abc import Iterator
+from collections.abc import Callable, Iterator, Sequence
 from contextlib import contextmanager
-from typing import Any, Callable, Sequence
+from typing import Any
 
 import numpy as np
-from tensordict import TensorDictBase
 import torch
-from tensordict.nn import TensorDictModule
+import torch.nn.functional as F
+from tensordict import TensorDictBase
 from torch import nn
 from torchrl.envs import EnvBase
-from torch.distributions import Categorical
-import torch.nn.functional as F
 
 
 def module_norm(module: nn.Module) -> float:

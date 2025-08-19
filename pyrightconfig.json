@@ -30,9 +30,14 @@
   "reportAny": false,
   "reportUnusedCallResult": false,
   "reportExplicitAny": false,
-  "reportUnknownParameterType": false,
+  "reportMissingTypeStubs": false,
   "reportMissingParameterType": false,
   "reportUnusedVariable": false,
   "reportUndefinedVariable": false,
-  "reportUnknownMemberType": false
+
+  "reportUnknownParameterType": false,
+  "reportUnknownMemberType": false,
+  "reportUnknownVariableType": false,
+  "reportUnknownArgumentType": false
+
 }
