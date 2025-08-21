@@ -60,7 +60,9 @@ def dict_with_prefix(prefix: str, d: dict[str, Any]) -> dict[str, Any]:
 def calc_return(tensor: torch.Tensor, gamma: float) -> float:
     """Calculate the return for the rewards in `tensor` with discount factor `gamma`."""
     n_steps = len(tensor)
-    discounting = (gamma * torch.ones(n_steps)) ** torch.arange(n_steps)
+    discounting = (
+        gamma * torch.ones(n_steps, device=tensor.device)
+    ) ** torch.arange(n_steps, device=tensor.device)
     g = (discounting * tensor).sum().item()
     return g
 
