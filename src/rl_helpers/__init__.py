@@ -148,13 +148,14 @@ def multinomial_masks(
 
 
 # tested
-def calc_rollout_returns(td: TensorDictBase, gamma: float) -> list[float]:
+def calc_rollout_returns(td: TensorDictBase, gamma: float) -> torch.Tensor:
     """Calculate the return for each rollout trajectory in `td`."""
     assert len(td.batch_size) == 2, "Only 2D batch size supported"
+    n_trajectories = td.batch_size[0]
 
-    returns = []
+    returns = torch.empty(n_trajectories)
     # Trajectories end at different time steps. Find the terminating time step for each trajectory by looking at the ("next", "done") key
-    for traj_idx in range(td.batch_size[0]):
+    for traj_idx in range(n_trajectories):
         dones = td[traj_idx]["next", "done"].squeeze(-1).to(torch.int64)
         if dones.any():
             done_idx: int = dones.argmax(-1)
@@ -163,5 +164,5 @@ def calc_rollout_returns(td: TensorDictBase, gamma: float) -> list[float]:
         rewards = td[traj_idx]["next", "reward"].squeeze(-1)[
             : done_idx + 1
         ]  # include the terminal state as well
-        returns.append(calc_return(rewards, gamma))
+        returns[traj_idx] = calc_return(rewards, gamma)
     return returns

@@ -53,6 +53,7 @@ def test_calc_rollout_returns() -> None:
         batch_size=torch.Size((3, 5)),
     )
     returns = calc_rollout_returns(td, gamma=1.0)
-    expected_returns = [1 + 2 + 3 + 4 + 5, 2 + 3 + 4, 3 + 4 + 5 + 6 + 7]
-    for r, exp_r in zip(returns, expected_returns, strict=True):
-        assert r == exp_r
+    expected_returns = torch.tensor(
+        [1 + 2 + 3 + 4 + 5, 2 + 3 + 4, 3 + 4 + 5 + 6 + 7], dtype=torch.float32
+    )
+    assert torch.allclose(returns, expected_returns)
