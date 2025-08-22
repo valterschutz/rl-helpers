@@ -1,8 +1,9 @@
 import torch
 from torch import nn
 from torchrl.modules import MLP
+from tensordict import TensorDict
 
-from rl_helpers import calc_return, module_norm
+from rl_helpers import calc_return, calc_rollout_returns, module_norm
 
 TOL = 1e-6
 
@@ -25,3 +26,33 @@ def test_module_norm() -> None:
     module2 = MLP(in_features=3, out_features=4, num_cells=[2, 2])
     norm2 = module_norm(module2)
     print(f"{norm2=}")
+
+
+def test_calc_rollout_returns() -> None:
+    td = TensorDict(
+        {  # pyright: ignore[reportArgumentType]
+            "next": {
+                "reward": torch.tensor(
+                    [
+                        [[1], [2], [3], [4], [5]],
+                        [[2], [3], [4], [5], [6]],
+                        [[3], [4], [5], [6], [7]],
+                    ],
+                    dtype=torch.float32,
+                ),
+                "done": torch.tensor(
+                    [
+                        [[False], [False], [False], [False], [True]],
+                        [[False], [False], [True], [False], [False]],
+                        [[False], [False], [False], [False], [False]],
+                    ],
+                    dtype=torch.bool,
+                ),
+            }
+        },
+        batch_size=torch.Size((3, 5)),
+    )
+    returns = calc_rollout_returns(td, gamma=1.0)
+    expected_returns = [1 + 2 + 3 + 4 + 5, 2 + 3 + 4, 3 + 4 + 5 + 6 + 7]
+    for r, exp_r in zip(returns, expected_returns, strict=True):
+        assert r == exp_r
