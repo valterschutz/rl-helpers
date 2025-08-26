@@ -166,3 +166,16 @@ def calc_rollout_returns(td: TensorDictBase, gamma: float) -> torch.Tensor:
         ]  # include the terminal state as well
         returns[traj_idx] = calc_return(rewards, gamma)
     return returns
+
+
+def normalize_bounded_value(
+    tensor: torch.Tensor, min_value: float, max_value: float
+) -> torch.Tensor:
+    """Given that we know the minimum and maximum value of all values in `tensor`, normalize them to be in [-1,1]."""
+    if max_value == min_value:
+        msg = "min_value and max_value must be different for normalization"
+        raise ValueError(msg)
+    transformed = tensor - min_value  # [0, max_value-min_value]
+    transformed = transformed / (max_value - min_value)  # [0, 1]
+    transformed = 2 * transformed - 1  # [-1,1]
+    return transformed
