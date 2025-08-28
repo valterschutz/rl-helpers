@@ -178,3 +178,20 @@ def normalize_bounded_value(
     transformed = transformed / (max_value - min_value)  # [0, 1]
     transformed = 2 * transformed - 1  # [-1,1]
     return transformed
+
+
+def add_wandb_key_prefix(prefix: str, key: str) -> str:
+    """
+    Given a wandb-like logging key like "aaa", "aaa/bbb" or "aaa/bbb.ccc", add a prefix to the last part.
+
+    - "aaa" -> "{prefix}aaa"
+    - "aaa/bbb" -> "aaa/{prefix}bbb"
+    - "aaa/bbb.ccc" -> "aaa/bbb.{prefix}ccc"
+    """
+    if "." in key:
+        head, tail = key.rsplit(".", 1)
+        return f"{head}.{prefix}{tail}"
+    if "/" in key:  # there's only ever a single '/'
+        head, tail = key.rsplit("/", 1)
+        return f"{head}/{prefix}{tail}"
+    return f"{prefix}{key}"
