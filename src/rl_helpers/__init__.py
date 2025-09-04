@@ -2,6 +2,7 @@
 
 from collections.abc import Callable, Iterator, Sequence
 from contextlib import contextmanager
+from typing import TypeVar
 
 import numpy as np
 import torch
@@ -50,7 +51,10 @@ def eval_mode(*models: nn.Module) -> Iterator[None]:
             model.train(mode)
 
 
-def dict_with_prefix[T](prefix: str, d: dict[str, T]) -> dict[str, T]:
+T = TypeVar("T")
+
+
+def dict_with_prefix(prefix: str, d: dict[str, T]) -> dict[str, T]:
     """Return a dictionary with all keys prefixed by `prefix`."""
     return {f"{prefix}{k}": v for k, v in d.items()}
 
