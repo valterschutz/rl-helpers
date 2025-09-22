@@ -151,7 +151,9 @@ def multinomial_masks(
 
 
 # tested
-def calc_rollout_returns(td: TensorDictBase, gamma: float) -> torch.Tensor:
+def calc_rollout_returns(
+    td: TensorDictBase, gamma: float, reward_key: str = "reward"
+) -> torch.Tensor:
     """Calculate the return for each rollout trajectory in `td`."""
     assert len(td.batch_size) == 2, "Only 2D batch size supported"
     n_trajectories = td.batch_size[0]
@@ -164,7 +166,7 @@ def calc_rollout_returns(td: TensorDictBase, gamma: float) -> torch.Tensor:
             done_idx: int = dones.argmax(-1)
         else:
             done_idx = len(dones)
-        rewards = td[traj_idx]["next", "reward"].squeeze(-1)[
+        rewards = td[traj_idx]["next", reward_key].squeeze(-1)[
             : done_idx + 1
         ]  # include the terminal state as well
         returns[traj_idx] = calc_return(rewards, gamma)
