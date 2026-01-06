@@ -1,7 +1,7 @@
 import torch
+from tensordict import TensorDict
 from torch import nn
 from torchrl.modules import MLP
-from tensordict import TensorDict
 
 from rl_helpers import calc_return, calc_rollout_returns, module_norm
 

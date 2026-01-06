@@ -1,13 +1,7 @@
 {
-  "include": [
-    "src",
-    "scripts"
-  ],
+  "include": ["src", "scripts"],
 
-  "exclude": [
-    "**/node_modules",
-    "**/__pycache__"
-  ],
+  "exclude": ["**/node_modules", "**/__pycache__"],
 
   "strict": [],
 
@@ -30,14 +24,17 @@
   "reportAny": false,
   "reportUnusedCallResult": false,
   "reportExplicitAny": false,
-  "reportMissingTypeStubs": false,
   "reportMissingParameterType": false,
   "reportUnusedVariable": false,
+  "reportUnusedParameter": false,
   "reportUndefinedVariable": false,
+  "reportMissingTypeStubs": false,
+  "reportPrivateUsage": false,
+  "reportImplicitStringConcatenation": false,
 
   "reportUnknownParameterType": false,
   "reportUnknownMemberType": false,
   "reportUnknownVariableType": false,
-  "reportUnknownArgumentType": false
-
+  "reportUnknownArgumentType": false,
+  "reportUnknownLambdaType": false
 }
