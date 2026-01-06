@@ -1,6 +1,6 @@
 [project]
 name = "rl-helpers"
-version = "0.8.4"
+version = "0.8.5"
 description = "Helper functions mostly for training RL agents but also for some supervised learning."
 readme = "README.md"
 requires-python = ">=3.11"

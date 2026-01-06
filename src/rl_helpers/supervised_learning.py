@@ -1,6 +1,5 @@
-from typing import override
-
 from lightning.pytorch.callbacks import EarlyStopping, ModelCheckpoint
+from typing_extensions import override
 
 
 class ModelCheckpointWithMinBatches(ModelCheckpoint):
