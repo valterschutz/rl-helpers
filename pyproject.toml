@@ -1,22 +1,21 @@
 [project]
 name = "rl-helpers"
-version = "0.7.4"
-description = "Add your description here"
+version = "0.8.4"
+description = "Helper functions mostly for training RL agents but also for some supervised learning."
 readme = "README.md"
-authors = [
-    { name = "Valter Schütz", email = "valterschutz@proton.me" }
-]
 requires-python = ">=3.11"
+authors = [{ name = "Valter Schütz", email = "valterschutz@proton.me" }]
 dependencies = [
-    "torchrl>=0.9.2",
+  "lightning>=2.6.0",
+  "torchrl>=0.9.2",
+]
+
+[dependency-groups]
+dev = [
+  "ipython>=9.4.0",
+  "pytest>=8.4.1",
 ]
 
 [build-system]
 requires = ["uv_build>=0.8.2,<0.9.0"]
 build-backend = "uv_build"
-
-[dependency-groups]
-dev = [
-    "ipython>=9.4.0",
-    "pytest>=8.4.1",
-]
